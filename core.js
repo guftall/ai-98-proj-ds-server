@@ -42,7 +42,15 @@ function totalTime(hrtimeValue) {
 
 exports.bufferReceived = function bufferReceived(buffer, cb) {
 
-    const result = Wav.decode(buffer);
+    var result;
+    try {
+        result = Wav.decode(buffer);
+    } catch (er) {
+        return;
+    }
+    if (result == undefined) {
+        return;
+    }
     if (result.sampleRate < 16000) {
         console.error('Warning: original sample rate (' + result.sampleRate + ') is lower than 16kHz. Up-sampling might produce erratic speech recognition.');
     }
